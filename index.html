@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#d9cdef">
+  <meta name="description" content="Organizador personal 100% offline: horario semanal, hábitos y tareas en tu dispositivo.">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>Mi Día</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div id="app">
+
+    <header class="topbar">
+      <span class="logo"><img class="app-icon" src="icons/logo.svg" alt=""></span>
+      <h1 id="appTitle">Hoy</h1>
+    </header>
+
+    <main id="content">
+      <section id="view-hoy" class="view active"></section>
+      <section id="view-semana" class="view"></section>
+      <section id="view-cal" class="view"></section>
+    </main>
+
+    <nav class="bottom-nav">
+      <button class="nav-item" data-view="hoy" type="button">
+        <span class="nav-ico"><img class="app-icon" src="icons/hoy.svg" alt=""></span>
+        <span class="nav-label">Hoy</span>
+      </button>
+
+      <button class="nav-item" data-view="semana" type="button">
+        <span class="nav-ico"><img class="app-icon" src="icons/semana.svg" alt=""></span>
+        <span class="nav-label">Semana</span>
+      </button>
+
+      <button class="nav-item" data-view="cal" type="button">
+        <span class="nav-ico"><img class="app-icon" src="icons/cal.svg" alt=""></span>
+        <span class="nav-label">Calendario</span>
+      </button>
+    </nav>
+
+    <!-- ============ MODAL: BLOQUE ============ -->
+    <div id="modal-block" class="modal" hidden>
+      <div class="modal-backdrop" data-action="modal-close"></div>
+      <div class="sheet">
+        <div class="sheet-head">
+          <h3 id="blockModalTitle">Añadir bloque</h3>
+          <button type="button" class="sheet-x" data-action="modal-close">✕</button>
+        </div>
+        <form id="form-block" novalidate>
+          <input type="hidden" id="block-id">
+          <div class="campo">
+            <label for="block-title">Título</label>
+            <input type="text" id="block-title" maxlength="60" placeholder="Ej. Trabajo, Estudio…" required>
+          </div>
+          <div class="campo">
+            <label for="block-weekday">Día de la semana</label>
+            <select id="block-weekday"></select>
+          </div>
+          <div class="campo-row">
+            <div class="campo">
+              <label for="block-start">Inicio</label>
+              <input type="time" id="block-start" required>
+            </div>
+            <div class="campo">
+              <label for="block-end">Fin</label>
+              <input type="time" id="block-end" required>
+            </div>
+          </div>
+          <div class="campo" id="block-color-field">
+            <label>Color</label>
+            <div class="swatches" id="block-swatches"></div>
+          </div>
+          <div class="form-actions">
+            <button type="button" id="block-delete" class="btn-ghost danger" hidden>Eliminar</button>
+            <div class="spacer"></div>
+            <button type="button" class="btn" data-action="modal-close">Cancelar</button>
+            <button type="submit" class="btn primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ============ MODAL: HÁBITO ============ -->
+    <div id="modal-habit" class="modal" hidden>
+      <div class="modal-backdrop" data-action="modal-close"></div>
+      <div class="sheet">
+        <div class="sheet-head">
+          <h3 id="habitModalTitle">Añadir hábito</h3>
+          <button type="button" class="sheet-x" data-action="modal-close">✕</button>
+        </div>
+        <form id="form-habit" novalidate>
+          <input type="hidden" id="habit-id">
+          <div class="campo">
+            <label for="habit-title">Hábito / rutina</label>
+            <input type="text" id="habit-title" maxlength="60" placeholder="Ej. Beber agua, Leer…" required>
+          </div>
+          <div class="campo">
+            <label>Icono</label>
+            <div class="emoji-grid" id="habit-emojis"></div>
+            <input type="hidden" id="habit-emoji" value="💧">
+          </div>
+          <div class="campo">
+            <label>Color</label>
+            <div class="swatches" id="habit-swatches"></div>
+          </div>
+          <div class="form-actions">
+            <button type="button" id="habit-delete" class="btn-ghost danger" hidden>Eliminar</button>
+            <div class="spacer"></div>
+            <button type="button" class="btn" data-action="modal-close">Cancelar</button>
+            <button type="submit" class="btn primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ============ MODAL: TAREA ============ -->
+    <div id="modal-task" class="modal" hidden>
+      <div class="modal-backdrop" data-action="modal-close"></div>
+      <div class="sheet">
+        <div class="sheet-head">
+          <h3 id="taskModalTitle">Añadir tarea</h3>
+          <button type="button" class="sheet-x" data-action="modal-close">✕</button>
+        </div>
+        <form id="form-task" novalidate>
+          <input type="hidden" id="task-id">
+          <div class="campo">
+            <label for="task-title">Tarea / compromiso</label>
+            <input type="text" id="task-title" maxlength="120" placeholder="Ej. Entregar informe…" required>
+          </div>
+<div class="campo">
+            <label for="task-date">Fecha</label>
+            <input type="date" id="task-date">
+          </div>
+          <label class="checkbox-row" id="task-buzon-row">
+            <input type="checkbox" id="task-buzon">
+            <span>Sin fecha: enviar al Buzón de Pendientes</span>
+          </label>
+          <div class="campo">
+            <label>Color</label>
+            <div class="swatches" id="task-swatches"></div>
+          </div>
+          <div class="form-actions">
+            <button type="button" id="task-delete" class="btn-ghost danger" hidden>Eliminar</button>
+            <div class="spacer"></div>
+            <button type="button" class="btn" data-action="modal-close">Cancelar</button>
+            <button type="submit" class="btn primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ============ MODAL: BUZÓN ============ -->
+    <div id="modal-buzon" class="modal" hidden>
+      <div class="modal-backdrop" data-action="modal-close"></div>
+      <div class="sheet">
+        <div class="sheet-head">
+          <h3>Buzón de Pendientes</h3>
+          <button type="button" class="sheet-x" data-action="modal-close">✕</button>
+        </div>
+        <div id="buzonList"></div>
+      </div>
+    </div>
+
+    <div id="toast" class="toast" hidden></div>
+  </div>
+
+  <script src="js/const.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/repo.js"></script>
+  <script src="js/clock.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/add.js"></script>
+  <script src="js/views/hoy.js"></script>
+  <script src="js/views/semana.js"></script>
+  <script src="js/views/calendario.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

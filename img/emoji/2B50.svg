@@ -1,0 +1,12 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <path d="M50 14 L57 38 L60 38 L50 60 L40 38 L43 38 Z" fill="#FFE494" stroke="#6B4F4F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M50 14 L54 32 L57 38 L43 38 L46 32 Z" fill="#F7D97A" stroke="none" opacity="0.55"/>
+  <path d="M50 32 L57 38 L50 60 L43 38 Z" fill="#FFDF77" stroke="none" opacity="0.55"/>
+  <path d="M50 20 L52 27 L55 30 L52 33 L50 40 L48 33 L45 30 L48 27 Z" fill="#FFF3C2" stroke="none" opacity="0.8"/>
+  <circle cx="43.5" cy="33" r="2.2" fill="#4A3728" stroke="none"/>
+  <circle cx="56.5" cy="33" r="2.2" fill="#4A3728" stroke="none"/>
+  <path d="M46 39 C48 42.5 52 42.5 54 39" fill="none" stroke="#4A3728" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M37 27 L38 25 L39 27 L41 28 L39 29 L38 31 L37 29 L35 28 Z" fill="#FFAEC0" stroke="#6B4F4F" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M62 27 L63 29 L65 30 L63 31 L62 33 L61 31 L59 30 L61 29 Z" fill="#C9BAE5" stroke="#6B4F4F" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M61 52 L63 56 L67 58 L63 60 L61 64 L59 60 L55 58 L59 56 Z" fill="#A8D5BA" stroke="none"/>
+</svg>

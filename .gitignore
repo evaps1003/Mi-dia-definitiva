@@ -1,0 +1,16 @@
+﻿# Referencias locales y temporales
+tmpserver.js
+gm_*.js
+*.bak
+*.old
+
+# Token / secretos (nunca subir)
+*.ghp_*
+.env
+
+# Logs y salidas de diagnóstico
+*.out.txt
+*.log
+
+# Node
+node_modules/

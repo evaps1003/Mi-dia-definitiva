@@ -1,0 +1,77 @@
+var CACHE = "midia-v17";
+var ARCHIVOS = [
+  "./",
+  "./index.html",
+  "./manifest.json",
+  "./css/styles.css",
+  "./js/const.js",
+  "./js/db.js",
+  "./js/ui.js",
+  "./js/repo.js",
+  "./js/clock.js",
+  "./js/store.js",
+  "./js/add.js",
+  "./js/views/hoy.js",
+  "./js/views/semana.js",
+  "./js/views/calendario.js",
+  "./js/app.js",
+  "./icons/icon-192.png",
+  "./icons/icon-512.png",
+  "./icons/icon-maskable-512.png",
+  "./icons/logo.svg",
+  "./icons/hoy.svg",
+  "./icons/semana.svg",
+  "./icons/cal.svg",
+  "./icons/buzon.svg"
+];
+
+self.addEventListener("install", function (e) {
+  e.waitUntil(
+    caches.open(CACHE)
+      .then(function (cache) {
+        return cache.addAll(ARCHIVOS);
+      })
+      .then(function () {
+        return self.skipWaiting();
+      })
+  );
+});
+
+self.addEventListener("activate", function (e) {
+  e.waitUntil(
+    caches.keys()
+      .then(function (claves) {
+        return Promise.all(
+          claves
+            .filter(function (k) { return k !== CACHE; })
+            .map(function (k) { return caches.delete(k); })
+        );
+      })
+      .then(function () {
+        return self.clients.claim();
+      })
+  );
+});
+
+self.addEventListener("fetch", function (e) {
+  var url = new URL(e.request.url);
+  if (url.origin !== location.origin) return;
+
+  e.respondWith(
+    caches.match(e.request)
+      .then(function (respuestaCache) {
+        if (respuestaCache) return respuestaCache;
+        return fetch(e.request)
+          .then(function (respuesta) {
+            if (respuesta && respuesta.status === 200 && respuesta.type === "basic") {
+              var copia = respuesta.clone();
+              caches.open(CACHE).then(function (cache) { cache.put(e.request, copia); });
+            }
+            return respuesta;
+          })
+          .catch(function () {
+            return caches.match("./index.html");
+          });
+      })
+  );
+});
