@@ -1,4 +1,4 @@
-var CACHE = "midia-v21";
+var CACHE = "midia-v22";
 var ARCHIVOS = [
   "./",
   "./index.html",
@@ -15,9 +15,10 @@ var ARCHIVOS = [
   "./js/views/semana.js",
   "./js/views/calendario.js",
   "./js/app.js",
-  "./icons/icon-192.png",
-  "./icons/icon-512.png",
-  "./icons/icon-maskable-512.png",
+  "./icons/icon-sun-192.png",
+  "./icons/icon-sun-512.png",
+  "./icons/icon-sun-maskable-512.png",
+  "./icons/apple-touch-icon.png",
   "./icons/logo.svg",
   "./icons/hoy.svg",
   "./icons/semana.svg",
