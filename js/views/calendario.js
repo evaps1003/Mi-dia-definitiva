@@ -58,10 +58,13 @@
         if (iso === today) cls += " today";
         if (iso === S.state.calSel) cls += " selected";
 
-        var dots = S.pendingFor(iso).slice(0, 3);
-        var extra = S.pendingFor(iso).length - 3;
-        var dotsHTML = dots.map(function (t) {
-          return '<span class="dot" style="background:' + U.esc(t.color || "#D9CDEF") + '"></span>';
+        var evs = S.eventsFor(iso);
+        var dots = [];
+        evs.slice(0, 2).forEach(function (e) { dots.push({ c: e.color || "#9d86cf" }); });
+        S.pendingFor(iso).slice(0, Math.max(0, 3 - dots.length)).forEach(function (t) { dots.push({ c: t.color || "#9d86cf" }); });
+        var extra = S.pendingFor(iso).length + evs.length - 3;
+        var dotsHTML = dots.map(function (d) {
+          return '<span class="dot" style="background:' + U.esc(d.c) + '"></span>';
         }).join("");
         if (extra > 0) dotsHTML += '<span class="dot" style="background:#9d86cf"></span>';
 
@@ -70,7 +73,10 @@
       }
 
       var selIso = S.state.calSel || today;
+      var selEvs = S.eventsFor(selIso);
       var selTasks = S.tasksFor(selIso);
+      var dayEventList = selEvs.length ?
+        '<div class="events-strip">' + selEvs.map(U.eventPillHTML).join("") + "</div>" : "";
       var dayTaskList = selTasks.length ?
         selTasks.map(function (t) { return U.taskCardHTML(t); }).join("")
         : U.emptyHTML("Sin tareas para este d\u00eda.");
@@ -84,7 +90,8 @@
 
         '<div class="cal-day-panel">' +
         '<h4>' + U.esc(U.fullDayISO(selIso)) +
-        '<button class="add-mini" type="button" data-action="add-task-cal" data-iso="' + selIso + '">+</button></h4>' +
+        '<button class="add-mini" type="button" data-action="add-event-cal" data-iso="' + selIso + '">+</button></h4>' +
+        dayEventList +
         dayTaskList +
         "</div>";
     }

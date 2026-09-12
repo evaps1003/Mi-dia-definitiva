@@ -3,7 +3,7 @@
   var Org = G.Org;
 
   var DB_NAME = "midia-offline";
-  var DB_VERSION = 3;
+  var DB_VERSION = 4;
   var _db = null;
 
   function reqPromise(req) {
@@ -37,6 +37,10 @@
         }
         if (!db.objectStoreNames.contains("task_log")) {
           db.createObjectStore("task_log", { keyPath: "id", autoIncrement: true });
+        }
+        if (!db.objectStoreNames.contains("events")) {
+          var events = db.createObjectStore("events", { keyPath: "id", autoIncrement: true });
+          events.createIndex("date", "date", { unique: false });
         }
       };
       req.onsuccess = function () { _db = req.result; res(_db); };

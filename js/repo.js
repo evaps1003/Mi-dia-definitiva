@@ -79,6 +79,19 @@
         });
       },
       remove: function (id) { return db.del("tasks", id); }
+    },
+
+    events: {
+      all: function () { return db.getAll("events"); },
+      add: function (data) { return db.put("events", data); },
+      update: function (id, data) {
+        return db.get("events", id).then(function (cur) {
+          var o = Object.assign({}, cur || {}, data);
+          o.id = id;
+          return db.put("events", o);
+        });
+      },
+      remove: function (id) { return db.del("events", id); }
     }
   };
 
@@ -88,7 +101,7 @@
   R.migrateOverdue = function (todayISO) {
     return db.getAll("tasks").then(function (tasks) {
       var targets = tasks.filter(function (t) {
-        return !t.completed && t.dueDate && t.dueDate < todayISO;
+        return !t.completed && !t.weekly && t.dueDate && t.dueDate < todayISO;
       });
       if (!targets.length) return 0;
       return db.addAll("tasks", targets.map(function (t) {

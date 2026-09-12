@@ -188,6 +188,34 @@ body {
 .task-card.done .task-title { color: var(--ink-faint); }
 .task-card.done .task-title::after { transform: scaleX(1); }
 .task-card.done .task-chip { opacity: .5; }
+.task-chip.rep {
+  background: var(--lavanda-soft) !important;
+  color: #5d5485; opacity: 1;
+}
+
+/* ---------- Selector de varios días [L][M][X][J][V][S][D] ---------- */
+.day-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.day-pill {
+  flex: 0 0 auto; width: 42px; height: 42px; border-radius: 12px;
+  border: 1.5px solid var(--line); background: var(--card);
+  color: var(--ink-soft); font-weight: 800; font-size: 15px; cursor: pointer;
+  display: grid; place-items: center; transition: transform .12s ease, background .12s ease;
+}
+.day-pill:active { transform: scale(.92); }
+.day-pill.selected {
+  background: var(--lavanda); border-color: transparent; color: #4b4470;
+  box-shadow: var(--shadow-soft);
+}
+
+/* ---------- Avisos de calendario (eventos pastel, sin checkbox) ---------- */
+.events-strip { display: flex; flex-wrap: wrap; gap: 8px; margin: 2px 0 14px; }
+.event-pill {
+  display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+  background: var(--pill, var(--lavanda-soft));
+  border-radius: 14px; padding: 7px 12px; box-shadow: var(--shadow-soft);
+}
+.event-pill .ep-time { font-size: 12px; font-weight: 800; color: rgba(0,0,0,.45); }
+.event-pill .ep-title { font-size: 14px; font-weight: 700; color: var(--ink); }
 
 /* ---------- Banner Buzón ---------- */
 .buzon-banner {

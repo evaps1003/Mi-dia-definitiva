@@ -35,17 +35,26 @@
           '<span class="w">' + short + (d === new Date().getDay() ? " \u00b7" : "") + "</span></div>";
       }).join("");
 
-      var blocks = st.blocks.filter(function (b) { return b.weekday === w; })
+      var blocks = st.blocks.filter(function (b) { return U.blockWeekdays(b).indexOf(w) >= 0; })
         .sort(function (a, b) { return a.startMin - b.startMin; });
 
       var list = blocks.length ?
         '<div class="timeline">' + blocks.map(U.bloqueCardHTML).join("") + "</div>" :
         U.emptyHTML("Sin bloques este d\u00eda. Usa la plantilla para reservarlo.");
 
+      var dayISO = S.weekdayISO(w);
+      var tasks = S.tasksFor(dayISO);
+      var taskList = tasks.length ?
+        tasks.map(U.taskCardHTML).join("") :
+        U.emptyHTML("No hay tareas para este d\u00eda.");
+
       return '<div class="week-row"><div class="pill-strip">' + pills + "</div></div>" +
         '<div class="section-title"><span>Bloques de ' + Org.WEEK_NAMES[w] + "</span>" +
         '<button class="add-mini" type="button" data-action="add-block-wday" data-w="' + w + '">+</button></div>' +
         list +
+        '<div class="section-title"><span>Tareas de ' + Org.WEEK_NAMES[w] + "</span>" +
+        '<button class="add-mini" type="button" data-action="add-task-wday" data-iso="' + dayISO + '">+</button></div>' +
+        taskList +
         '<p class="hint">Plantilla fija que se repite cada semana. Toca un bloque para editarlo.</p>';
     },
 
@@ -68,7 +77,7 @@
       }).join("");
 
       var cols = Org.EDITOR_ORDER.map(function (d) {
-        var blocks = st.blocks.filter(function (b) { return b.weekday === d; })
+        var blocks = st.blocks.filter(function (b) { return U.blockWeekdays(b).indexOf(d) >= 0; })
           .sort(function (a, b) { return a.startMin - b.startMin; });
         var sel = d === st.semanaWday ? " sel" : "";
         var tdy = d === todayW ? " today" : "";

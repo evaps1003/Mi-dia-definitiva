@@ -171,9 +171,10 @@
     var chk = checkHTML(isDone, ' data-action="task-toggle" data-id="' + task.id + '"');
     var colorBg = task.color || "#D9CDEF";
     var dueLabel = task.dueDate ? task.dueDate.slice(8) + "/" + task.dueDate.slice(5, 7) : "Buz\u00f3n";
+    var rep = task.weekly ? '<span class="task-chip rep">Semanal</span>' : "";
     return '<div class="task-card' + cardCls + '" data-action="edit-task" data-id="' + task.id + '">' + chk +
       '<div class="task-body"><span class="task-title">' + esc(task.title) +
-      '</span><div class="task-meta"><span class="task-chip" style="background:' + esc(colorBg) + '">' + esc(dueLabel) + "</span></div></div></div>";
+      '</span><div class="task-meta"><span class="task-chip" style="background:' + esc(colorBg) + '">' + esc(dueLabel) + "</span>" + rep + "</div></div></div>";
   }
 
   function habitCardHTML(habit, checked, iso) {
@@ -187,6 +188,46 @@
 
   function emptyHTML(msg) {
     return '<div class="empty"><strong>Sin datos</strong>' + esc(msg) + '</div>';
+  }
+
+  // ── Aviso de bloque (tarjeta pastel sin checkbox) ────────────
+  function bloquePillHTML(block) {
+    var t1 = fmtMin(block.startMin), t2 = fmtMin(block.endMin);
+    return '<div class="event-pill" data-action="edit-block" data-id="' + block.id + '" style="--pill:' + esc(block.color) + '">' +
+      '<span class="ep-time">' + t1 + " \u2013 " + t2 + "</span>" +
+      '<span class="ep-title">' + esc(block.title) + "</span></div>";
+  }
+
+  // ── Recordatorio/evento (píldora pastel, sin checkbox) ────────
+  function eventPillHTML(ev) {
+    var t = ev.time ? '<span class="ep-time">' + esc(ev.time) + "</span>" : "";
+    return '<div class="event-pill" data-action="edit-event" data-id="' + ev.id + '" style="--pill:' + esc(ev.color) + '">' +
+      t + '<span class="ep-title">' + esc(ev.title) + "</span></div>";
+  }
+
+  // Días de la semana de un bloque (retrocompatible: weekday | weekdays[])
+  function blockWeekdays(b) {
+    if (b.weekdays && b.weekdays.length) return b.weekdays;
+    return b.weekday !== undefined && b.weekday !== null ? [b.weekday] : [];
+  }
+
+  // ── Selector de varios días [L][M][X][J][V][S][D] ──────────────
+  function renderDayPills(container, selected, onToggle) {
+    container.innerHTML = "";
+    Org.EDITOR_ORDER.forEach(function (w) {
+      var sel = selected.indexOf(w) >= 0 ? " selected" : "";
+      var d = document.createElement("button");
+      d.type = "button";
+      d.className = "day-pill" + sel;
+      d.textContent = Org.DAY_LETTERS[w];
+      d.addEventListener("click", function () {
+        var i = selected.indexOf(w);
+        if (i >= 0) selected.splice(i, 1); else selected.push(w);
+        renderDayPills(container, selected, onToggle);
+        if (onToggle) onToggle(selected.slice());
+      });
+      container.appendChild(d);
+    });
   }
 
   function weekPillStrip(selectedISO, onPillClick) {
@@ -219,18 +260,9 @@
   U.habitCardHTML = habitCardHTML;
   U.emptyHTML = emptyHTML;
   U.weekPillStrip = weekPillStrip;
-
-  // ── Weekday select options ───────────────────────────────────
-  function buildWeekdaySelect(sel, val) {
-    sel.innerHTML = "";
-    Org.EDITOR_ORDER.forEach(function (w) {
-      var opt = document.createElement("option");
-      opt.value = w;
-      opt.textContent = Org.WEEK_NAMES[w];
-      opt.selected = w === val;
-      sel.appendChild(opt);
-    });
-  }
-  U.buildWeekdaySelect = buildWeekdaySelect;
+  U.bloquePillHTML = bloquePillHTML;
+  U.eventPillHTML = eventPillHTML;
+  U.blockWeekdays = blockWeekdays;
+  U.renderDayPills = renderDayPills;
 
 })(window);

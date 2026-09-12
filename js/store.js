@@ -10,6 +10,7 @@
       blocks: [],
       habits: [],
       tasks: [],
+      events: [],
       log: {},          // "habitId|YYYY-MM-DD" -> 1/0
       selectedISO: null,
       semanaWday: null, // 0..6 (getDay)
@@ -30,12 +31,14 @@
         repo.blocks.all(),
         repo.habits.all(),
         repo.tasks.all(),
+        repo.events.all(),
         repo.habitLog.all()
       ]).then(function (rs) {
-        var blocks = rs[0], habits = rs[1], tasks = rs[2], logRows = rs[3];
+        var blocks = rs[0], habits = rs[1], tasks = rs[2], events = rs[3], logRows = rs[4];
         S.state.blocks = blocks || [];
         S.state.habits = (habits || []).sort(function (a, b) { return (a.sortPos || 0) - (b.sortPos || 0); });
         S.state.tasks = tasks || [];
+        S.state.events = events || [];
         var map = {};
         (logRows || []).forEach(function (r) { map[r.habitId + "|" + r.date] = r.completed; });
         S.state.log = map;
@@ -57,16 +60,48 @@
     // ── Selectores ─────────────────────────────────────────────
     blocksFor: function (iso) {
       var w = U.weekdayOf(iso);
-      return S.state.blocks.filter(function (b) { return b.weekday === w; })
+      return S.state.blocks.filter(function (b) { return U.blockWeekdays(b).indexOf(w) >= 0; })
         .sort(function (a, b) { return a.startMin - b.startMin; });
     },
 
+    // Fecha concreta (ISO) del día de la semana `w` dentro de la semana
+    // del día seleccionado actualmente (selectedISO). Si w es hoy, coincide con hoy.
+    weekdayISO: function (w) {
+      var base = S.state.selectedISO || U.hoyISO();
+      return U.addDaysISO(U.mondayOfISO(base), (w + 6) % 7);
+    },
+
+    // Recordatorios/eventos que caen en una fecha iso
+    // * repeat 0 "none":  solo ese día
+    // * repeat 1 "weekly": cada semana, el mismo día de la semana (desde su fecha)
+    // * repeat 2 "yearly": cada año, el mismo mes y día
+    eventsFor: function (iso) {
+      var w = U.weekdayOf(iso);
+      var md = iso.slice(5); // MM-DD
+      return S.state.events.filter(function (e) {
+        if (!e.date) return false;
+        if (e.repeat === 1) return iso >= e.date && U.weekdayOf(e.date) === w;
+        if (e.repeat === 2) return e.date.slice(5) === md && iso >= e.date;
+        return e.date === iso;
+      }).sort(function (a, b) {
+        var ta = a.time ? a.time : "99:99", tb = b.time ? b.time : "99:99";
+        return ta < tb ? -1 : (ta > tb ? 1 : 0);
+      });
+    },
+
     tasksFor: function (iso) {
-      return S.state.tasks.filter(function (t) { return t.dueDate === iso; })
-        .sort(function (a, b) { return (a.completed ? 1 : 0) - (b.completed ? 1 : 0); });
+      var w = U.weekdayOf(iso);
+      return S.state.tasks.filter(function (t) {
+        if (t.dueDate === iso) return true;
+        return !!t.weekly && t.dueDate && iso >= t.dueDate && U.weekdayOf(t.dueDate) === w;
+      }).sort(function (a, b) { return (a.completed ? 1 : 0) - (b.completed ? 1 : 0); });
     },
     pendingFor: function (iso) {
-      return S.state.tasks.filter(function (t) { return t.dueDate === iso && !t.completed; });
+      var w = U.weekdayOf(iso);
+      return S.state.tasks.filter(function (t) {
+        if (t.dueDate === iso && !t.completed) return true;
+        return !!t.weekly && t.dueDate && iso >= t.dueDate && U.weekdayOf(t.dueDate) === w && !t.completed;
+      });
     },
     pendingBuzon: function () {
       return S.state.tasks.filter(function (t) { return !t.dueDate && !t.completed; });
@@ -93,6 +128,9 @@
     },
     deleteTask: function (id) {
       return repo.tasks.remove(id).then(function () { return S.refresh(); });
+    },
+    deleteEvent: function (id) {
+      return repo.events.remove(id).then(function () { return S.refresh(); });
     },
 
     toggleHabit: function (id, iso, val) {

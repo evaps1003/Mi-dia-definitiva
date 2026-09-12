@@ -59,9 +59,13 @@
             <input type="text" id="block-title" maxlength="60" placeholder="Ej. Trabajo, Estudio…" required>
           </div>
           <div class="campo">
-            <label for="block-weekday">Día de la semana</label>
-            <select id="block-weekday"></select>
+            <label>Días de la semana</label>
+            <div class="day-pills" id="block-day-pills"></div>
           </div>
+          <label class="checkbox-row">
+            <input type="checkbox" id="block-weekly" checked>
+            <span>Repetir todas las semanas</span>
+          </label>
           <div class="campo-row">
             <div class="campo">
               <label for="block-start">Inicio</label>
@@ -137,6 +141,14 @@
             <label for="task-date">Fecha</label>
             <input type="date" id="task-date">
           </div>
+          <div class="campo">
+            <label>Repetir en días</label>
+            <div class="day-pills" id="task-day-pills"></div>
+          </div>
+          <label class="checkbox-row">
+            <input type="checkbox" id="task-weekly">
+            <span>Repetir todas las semanas</span>
+          </label>
           <label class="checkbox-row" id="task-buzon-row">
             <input type="checkbox" id="task-buzon">
             <span>Sin fecha: enviar al Buzón de Pendientes</span>
@@ -147,6 +159,52 @@
           </div>
           <div class="form-actions">
             <button type="button" id="task-delete" class="btn-ghost danger" hidden>Eliminar</button>
+            <div class="spacer"></div>
+            <button type="button" class="btn" data-action="modal-close">Cancelar</button>
+            <button type="submit" class="btn primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ============ MODAL: EVENTO / RECORDATORIO ============ -->
+    <div id="modal-event" class="modal" hidden>
+      <div class="modal-backdrop" data-action="modal-close"></div>
+      <div class="sheet">
+        <div class="sheet-head">
+          <h3 id="eventModalTitle">Añadir recordatorio</h3>
+          <button type="button" class="sheet-x" data-action="modal-close">✕</button>
+        </div>
+        <form id="form-event" novalidate>
+          <input type="hidden" id="event-id">
+          <div class="campo">
+            <label for="event-title">Recordatorio / evento</label>
+            <input type="text" id="event-title" maxlength="120" placeholder="Ej. Cumpleaños, cita, pago…" required>
+          </div>
+          <div class="campo-row">
+            <div class="campo">
+              <label for="event-date">Fecha</label>
+              <input type="date" id="event-date" required>
+            </div>
+            <div class="campo">
+              <label for="event-time">Hora (opcional)</label>
+              <input type="time" id="event-time">
+            </div>
+          </div>
+          <div class="campo">
+            <label for="event-repeat">Repite</label>
+            <select id="event-repeat">
+              <option value="0">No se repite</option>
+              <option value="1">Todas las semanas</option>
+              <option value="2">Todos los años</option>
+            </select>
+          </div>
+          <div class="campo">
+            <label>Color</label>
+            <div class="swatches" id="event-swatches"></div>
+          </div>
+          <div class="form-actions">
+            <button type="button" id="event-delete" class="btn-ghost danger" hidden>Eliminar</button>
             <div class="spacer"></div>
             <button type="button" class="btn" data-action="modal-close">Cancelar</button>
             <button type="submit" class="btn primary">Guardar</button>

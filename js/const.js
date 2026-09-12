@@ -33,6 +33,9 @@
   Org.MONTHS_FULL = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
   Org.MONTHS_SHORT = ["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
 
+  // Índice por Date.getDay(): 0=Dom…6=Sáb
+  Org.DAY_LETTERS = ["D", "L", "M", "X", "J", "V", "S"];
+
   Org.EMPTY_BLOCK = { id: null, weekday: 1, startMin: 540, endMin: 600, title: "", color: "#D9CDEF" };
   Org.EMPTY_HABIT = { id: null, title: "", icon: "\uD83D\uDCA7", color: "#D9CDEF", sortPos: 0 };
   Org.EMPTY_TASK =  { id: null, title: "", dueDate: null, completed: 0, color: "#D9CDEF" };

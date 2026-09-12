@@ -59,9 +59,9 @@
     var iso = S.state.selectedISO || U.hoyISO();
 
     switch (a) {
-      case "add-block-sec": Org.add.openBlockModal({ weekday: U.weekdayOf(iso) }); break;
       case "add-habit-sec": Org.add.openHabitModal({}); break;
       case "add-task-sec": Org.add.openTaskModal({ iso: iso }); break;
+      case "add-event-cal": Org.add.openEventModal({ iso: el.dataset.iso }); break;
 
       case "set-wday":
         S.state.semanaWday = +el.dataset.w;
@@ -83,6 +83,10 @@
         Org.add.openBlockModal({ weekday: +el.dataset.w });
         break;
 
+      case "add-task-wday":
+        Org.add.openTaskModal({ iso: el.dataset.iso });
+        break;
+
       case "pick-day": controls.setDay(el.dataset.iso); break;
       case "week-prev": controls.shiftWeek(-1); break;
       case "week-next": controls.shiftWeek(1); break;
@@ -99,6 +103,10 @@
       case "edit-task":
         if (e.target.closest(".check")) return;
         Org.add.openTaskModal({ taskId: id });
+        break;
+
+      case "edit-event":
+        Org.add.openEventModal({ eventId: id });
         break;
 
       case "buzon-open":
@@ -124,10 +132,6 @@
       case "cal-prev": Cal.move(-1); break;
       case "cal-next": Cal.move(1); break;
       case "cal-pick": Cal.pick(el.dataset.iso); break;
-
-      case "add-task-cal":
-        Org.add.openTaskModal({ iso: el.dataset.iso });
-        break;
 
       case "modal-close":
         var m = el.closest(".modal");
