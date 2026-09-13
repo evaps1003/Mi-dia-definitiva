@@ -9,7 +9,7 @@
 
   // ── Estado de formulario ─────────────────────────────────────
   var mBlock = { id: null, color: "#D9CDEF", days: [], weekly: true, showAsAviso: false };
-  var mHabit = { id: null, color: "#D9CDEF", emoji: "\uD83D\uDCA7" };
+  var mHabit = { id: null, color: "#D9CDEF", emoji: "\uE006" };
   var mTask  = { id: null, color: "#FBDCC6", days: [], weekly: false };
   var mEvent = { id: null, color: "#D7E7F2" };
 
@@ -74,7 +74,7 @@
     if (mHabit.id) {
       h = S.state.habits.filter(function (x) { return x.id === mHabit.id; })[0];
     }
-    mHabit.emoji = h ? h.icon : "\uD83D\uDCA7";
+    mHabit.emoji = h ? h.icon : "\uE006";
     mHabit.color = h ? h.color : "#D9CDEF";
 
     document.getElementById("habitModalTitle").textContent = mHabit.id ? "Editar h\u00e1bito" : "A\u00f1adir h\u00e1bito";

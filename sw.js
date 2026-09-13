@@ -1,4 +1,4 @@
-var CACHE = "midia-v24";
+var CACHE = "midia-v25";
 var ARCHIVOS = [
   "./",
   "./index.html",
@@ -19,6 +19,16 @@ var ARCHIVOS = [
   "./icons/icon-sun-512.png",
   "./icons/icon-sun-maskable-512.png",
   "./img/emoji/E001.svg",
+  "./img/emoji/E002.svg",
+  "./img/emoji/E003.svg",
+  "./img/emoji/E004.svg",
+  "./img/emoji/E005.svg",
+  "./img/emoji/E006.svg",
+  "./img/emoji/E007.svg",
+  "./img/emoji/E008.svg",
+  "./img/emoji/E009.svg",
+  "./img/emoji/E00A.svg",
+  "./img/emoji/E00B.svg",
   "./icons/apple-touch-icon.png",
   "./icons/logo.svg",
   "./icons/hoy.svg",

@@ -184,7 +184,7 @@
     var chk = checkHTML(checked, ' data-action="habit-toggle" data-id="' + habit.id + '" data-iso="' + iso + '"');
     var tintBg = habit.color ? "background:" + habit.color + ";" : "";
     return '<div class="habit-card' + done + '" data-action="edit-habit" data-id="' + habit.id + '">' +
-      '<div class="habit-ico" style="' + tintBg + '">' + emojiHTML(habit.icon || "\uD83D\uDCA7") + "</div>" +
+      '<div class="habit-ico" style="' + tintBg + '">' + emojiHTML(habit.icon || "\uE006") + "</div>" +
       '<span class="habit-name">' + esc(habit.title) + "</span>" + chk + "</div>";
   }
 
