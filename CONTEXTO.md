@@ -4,7 +4,7 @@ Organizador personal 100% offline en GitHub Pages:
 **https://evaps1003.github.io/Mi-dia-definitiva/**
 
 - Repo: `github.com/evaps1003/Mi-dia-definitiva` (rama `master`)
-- PWA con Service Worker (`sw.js`, versión actual `midia-v25`)
+- PWA con Service Worker (`sw.js`, versión actual `midia-v26`)
 - Persistencia: IndexedDB (`midia-offline`) con tiendas `blocks`, `habits`, `habit_log`, `tasks`, `task_log`, `events`, `meta`
 - Código en `js/`: `const`, `db`, `ui`, `repo`, `clock`, `store`, `add`, `app` y vistas en `js/views/` (`hoy`, `semana`, `calendario`)
 
@@ -45,6 +45,18 @@ Organizador personal 100% offline en GitHub Pages:
 - Icono por defecto de hábito nuevo: la gota (`\uE006`).
 - Los SVGs OpenMoji antiguos se conservan en `img/emoji/` para no romper hábitos ya creados.
 - Los 11 SVGs se precachean en el SW (`ARCHIVOS`); SW v24→v25.
+
+## Sesión: vista semanal mejorada (navegación + fechas)
+
+- **Navegación entre semanas** en la vista Semana: barra superior con flechas `<` `>` junto al rango visible (ej. "Semana 14 – 20 de septiembre") y botón **"Esta semana"**. Permite ir a semanas futuras para consultar/crear/editar con antelación (`week-prev`/`week-next`/`go-today` sobre `selectedISO`).
+- **Días con número**: cabeceras de columna en el mapa y píldoras del modo "Por Día" muestran día + número (LUN 15, MAR 16…). Badge especial (círculo lavanda) para el día de hoy **solo si está dentro de la semana mostrada**.
+- **Asignación contextual**: al añadir un bloque desde un día de la vista semanal, el formulario prellena su fecha concreta (`add-block-iso`). 
+  - Bloques con **fecha** (`date` ISO, campo nuevo en el modal "Fecha concreta (opcional)"): bloque puntual visible solo ese día en Hoy/Calendario/Mapa.
+  - Bloques sin fecha: plantilla semanal como antes.
+  - `store.blocksFor(iso)`: con `date` → igualdad exacta; sin `date` → coincidencia por día de semana.
+  - En el mapa, los bloques puntuales llevan un puntito (`.pinned`) y tooltip "solo este día".
+- Tareas ya eran por fecha (`dueDate`); desde el mapa/Día se añaden con el ISO del día elegido.
+- SW v25→v26.
 
 ## Recordatorio de despliegue
 
