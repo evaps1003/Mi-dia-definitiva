@@ -131,7 +131,7 @@
       S.state.selectedISO = U.addDaysISO(S.state.selectedISO, n * 7);
       S.notify();
     },
-    goToday: function () { S.setDay(U.hoyISO()); },
+    goToday: function () { A.setDay(U.hoyISO()); },
 
     // Tachar una tarea:
     // * con `iso` -> registro por fecha en task_log (independiente por día)

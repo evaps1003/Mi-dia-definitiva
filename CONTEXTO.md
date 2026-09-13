@@ -4,7 +4,7 @@ Organizador personal 100% offline en GitHub Pages:
 **https://evaps1003.github.io/Mi-dia-definitiva/**
 
 - Repo: `github.com/evaps1003/Mi-dia-definitiva` (rama `master`)
-- PWA con Service Worker (`sw.js`, versión actual `midia-v26`)
+- PWA con Service Worker (`sw.js`, versión actual `midia-v27`)
 - Persistencia: IndexedDB (`midia-offline`) con tiendas `blocks`, `habits`, `habit_log`, `tasks`, `task_log`, `events`, `meta`
 - Código en `js/`: `const`, `db`, `ui`, `repo`, `clock`, `store`, `add`, `app` y vistas en `js/views/` (`hoy`, `semana`, `calendario`)
 
@@ -57,6 +57,17 @@ Organizador personal 100% offline en GitHub Pages:
   - En el mapa, los bloques puntuales llevan un puntito (`.pinned`) y tooltip "solo este día".
 - Tareas ya eran por fecha (`dueDate`); desde el mapa/Día se añaden con el ISO del día elegido.
 - SW v25→v26.
+
+## Sesión: navegación semanal solo en Semana + fix «Esta semana»
+
+- La navegación entre semanas (flechas `<`/`>`, rango «Semana 15 – 21 Sept» y botón **Esta semana**) queda **exclusivamente en la pantalla Semana**, en sus dos modos:
+  - **Por Día**: barra `week-navbar` + píldoras `LUN 15`… con badge del día de hoy.
+  - **Mapa Semanal**: cabeceras `map-dow` con día y número (`LUN 15`), columna de hoy resaltada y barra de navegación.
+- **Bug corregido**: `goToday` llamaba a `S.setDay` (no existía) → «Esta semana»/«Hoy» no hacía nada. Ahora llama a `A.setDay` (`js/store.js`).
+- **Hoy simplificado**: `weekPillStrip(...,{nav:false})` muestra solo las 7 píldoras del día (sin flechas ni salto), la navegación ya no está en Hoy (`js/ui.js`, `js/views/hoy.js`).
+- Badge del día actual en las píldoras: número dentro de un círculo lavanda (`css/styles.css`).
+- Asignación contextual confirmada: tocar un día de una semana futura abre ese día y el modal de bloque/tarea lleva la fecha exacta `YYYY-MM-DD`.
+- SW v26→v27.
 
 ## Recordatorio de despliegue
 

@@ -42,7 +42,7 @@
         U.emptyHTML("Sin bloques este d\u00eda.");
 
       root.innerHTML =
-        U.weekPillStrip(iso) +
+        U.weekPillStrip(iso, null, { nav: false }) +
         avisos +
 
         '<div class="section-title"><span>' + blockTitle + "</span></div>" +

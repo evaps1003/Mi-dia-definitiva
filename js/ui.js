@@ -232,14 +232,21 @@
     });
   }
 
-  function weekPillStrip(selectedISO, onPillClick) {
+  function weekPillStrip(selectedISO, onPillClick, opts) {
+    opts = opts || {};
     var days = weekDaysOfISO(selectedISO);
     var today = hoyISO();
     var first = days[0], last = days[6];
     var range = fmtRangeISO(first, last);
-    var jumpBtn = selectedISO === today ? "" : '<button id="jumpToday" type="button" data-action="go-today">Hoy</button>';
+    var prev = opts.nav === false ? "" :
+      '<button class="week-nav" type="button" data-action="week-prev" aria-label="Semana anterior">&laquo;</button>';
+    var next = opts.nav === false ? "" :
+      '<button class="week-nav" type="button" data-action="week-next" aria-label="Semana siguiente">&raquo;</button>';
+    var jumpBtn = opts.nav === false || selectedISO === today ? "" : '<button id="jumpToday" type="button" data-action="go-today">Hoy</button>';
+    var rangeLine = opts.nav === false ? "" :
+      '<div style="display:flex;align-items:center;justify-content:space-between"><span id="weekRange">' + esc(range) + "</span>" + jumpBtn + "</div>";
     var pills = '<div class="week-row">' +
-      '<button class="week-nav" type="button" data-action="week-prev" aria-label="Semana anterior">&laquo;</button>' +
+      prev +
       '<div class="pill-strip">' +
       days.map(function (iso) {
         var w = Org.WEEK_SHORT[weekdayOf(iso)];
@@ -250,9 +257,9 @@
           '<span class="w">' + w + '</span><span class="d">' + d + "</span></div>";
       }).join("") +
       "</div>" +
-      '<button class="week-nav" type="button" data-action="week-next" aria-label="Semana siguiente">&raquo;</button>' +
+      next +
       "</div>" +
-      '<div style="display:flex;align-items:center;justify-content:space-between"><span id="weekRange">' + esc(range) + "</span>" + jumpBtn + "</div>";
+      rangeLine;
     return pills;
   }
 
