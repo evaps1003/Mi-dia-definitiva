@@ -4,7 +4,7 @@ Organizador personal 100% offline en GitHub Pages:
 **https://evaps1003.github.io/Mi-dia-definitiva/**
 
 - Repo: `github.com/evaps1003/Mi-dia-definitiva` (rama `master`)
-- PWA con Service Worker (`sw.js`, versión actual `midia-v23`)
+- PWA con Service Worker (`sw.js`, versión actual `midia-v25`)
 - Persistencia: IndexedDB (`midia-offline`) con tiendas `blocks`, `habits`, `habit_log`, `tasks`, `task_log`, `events`, `meta`
 - Código en `js/`: `const`, `db`, `ui`, `repo`, `clock`, `store`, `add`, `app` y vistas en `js/views/` (`hoy`, `semana`, `calendario`)
 
@@ -35,6 +35,16 @@ Organizador personal 100% offline en GitHub Pages:
 - Renombrados para romper caché: `icons/icon-sun-{192,512}.png`, `icons/icon-sun-maskable-512.png`, `apple-touch-icon.png` (180 px, necesario para iOS).
 - `index.html` incluye el `<link rel="apple-touch-icon">` (clave en iPhone/iPad).
 - SW v21→v23 por los cambios de esta sesión.
+
+## Sesión: emoticonos personalizados de Eva
+
+- La paleta de emojis de hábitos contiene **solo los emoticonos propios** (se quitaron los OpenMoji de la lista).
+- Los iconos se colocan en `img/emoji/<CODIGO>.svg` (SVG envoltorio con el PNG redimensionado a 128 px embebido en base64).
+- `Org.CUSTOM_EMOJIS` en `js/const.js` (PUA `\uE000`–`\uF8FF`); `Org.EMOJIS = Org.CUSTOM_EMOJIS`.
+- Mapa: `E001` diente · `E002` cerdo · `E003` cubiertos · `E004` flor rosa · `E005` fresa · `E006` gota de agua · `E007` libro · `E008` pata blanca · `E009` sobre · `E00A` sol · `E00B` tulipán.
+- Icono por defecto de hábito nuevo: la gota (`\uE006`).
+- Los SVGs OpenMoji antiguos se conservan en `img/emoji/` para no romper hábitos ya creados.
+- Los 11 SVGs se precachean en el SW (`ARCHIVOS`); SW v24→v25.
 
 ## Recordatorio de despliegue
 
