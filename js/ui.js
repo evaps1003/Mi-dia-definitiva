@@ -237,7 +237,7 @@
     var today = hoyISO();
     var first = days[0], last = days[6];
     var range = fmtRangeISO(first, last);
-    var jumpBtn = selectedISO === today ? "" : '<button id="jumpToday" type="button">Hoy</button>';
+    var jumpBtn = selectedISO === today ? "" : '<button id="jumpToday" type="button" data-action="go-today">Hoy</button>';
     var pills = '<div class="week-row">' +
       '<button class="week-nav" type="button" data-action="week-prev" aria-label="Semana anterior">&laquo;</button>' +
       '<div class="pill-strip">' +

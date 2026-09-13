@@ -312,6 +312,7 @@ body {
   font-size: 15px; font-weight: 600; color: var(--ink-soft); cursor: pointer;
 }
 .checkbox-row input { width: 20px; height: 20px; accent-color: #9d86cf; }
+.field-note { font-size: 11px; color: var(--ink-faint); margin-top: 4px; line-height: 1.4; }
 
 .form-actions { display: flex; gap: 10px; align-items: center; margin-top: 18px; }
 .form-actions .spacer { flex: 1; }
@@ -460,10 +461,6 @@ body {
 .map { position: relative; }
 .map-head { display: grid; grid-template-columns: 32px repeat(7, 1fr); margin-bottom: 6px; }
 .map-gutter-head { grid-column: 1; }
-.map-dow { text-align: center; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-faint); cursor: pointer; padding: 2px 0; }
-.map-dow.today { color: #8a74c9; }
-.map-dow.sel { color: #5a4694; }
-.map-dow.sel::after { content: ""; display: block; width: 18px; height: 3px; border-radius: 3px; background: var(--lavanda); margin: 3px auto 0; }
 .map-body { display: grid; grid-template-columns: 32px 1fr; }
 .map-gutter { display: flex; flex-direction: column; }
 .map-hour { height: 18px; font-size: 9px; font-weight: 600; color: var(--ink-faint); text-align: right; padding-right: 6px; line-height: 1; transform: translateY(-4px); }
@@ -490,5 +487,62 @@ body {
 
 .pill.wday-pill { min-width: 48px; padding: 10px 6px; }
 .pill.wday-pill .w { font-size: 12px; }
+
+/* ---------- Barra de navegación de semanas (< Semana … > Esta semana) ---------- */
+.week-navbar {
+  display: flex; align-items: center; gap: 8px;
+  margin: 0 0 12px; padding: 6px 2px;
+}
+.week-navbar .week-nav {
+  flex: 0 0 34px; height: 34px; border: none; border-radius: 12px;
+  background: var(--card); color: var(--ink-soft); font-size: 17px; font-weight: 700;
+  cursor: pointer; box-shadow: var(--shadow-soft); display: grid; place-items: center;
+  font-family: inherit;
+}
+.week-navbar .week-nav:active { transform: scale(0.94); background: var(--lavanda-soft); }
+.week-range {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 10px;
+  min-width: 0;
+}
+.week-range-main {
+  font-size: 14px; font-weight: 600; color: var(--ink-soft);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.week-range-main strong { color: var(--ink); font-weight: 800; }
+.week-now {
+  border: none; background: var(--lavanda-soft); color: #6a56a4;
+  font-size: 12px; font-weight: 700; padding: 6px 12px; border-radius: 12px;
+  cursor: pointer; font-family: inherit; flex: 0 0 auto;
+  transition: background .12s, transform .12s;
+}
+.week-now:active { background: var(--lavanda); transform: scale(0.94); }
+
+/* ---------- Mapa semanal: cabeceras con día y número ---------- */
+.map-dow {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  padding: 3px 0 6px; cursor: pointer;
+}
+.map-dow .mw {
+  font-size: 9px; font-weight: 800; text-transform: uppercase;
+  letter-spacing: .04em; color: var(--ink-faint);
+}
+.map-dow .md {
+  font-size: 13px; font-weight: 800; color: var(--ink-soft);
+  width: 22px; height: 22px; border-radius: 50%;
+  display: grid; place-items: center; line-height: 1;
+}
+.map-dow.sel { color: #5a4694; }
+.map-dow.sel .md { border: 1.5px solid var(--lavanda); }
+.map-dow.sel::after { content: ""; display: block; width: 18px; height: 3px; border-radius: 3px; background: var(--lavanda); margin: 1px auto 0; }
+.map-dow.today .mw { color: #8a74c9; }
+.map-dow.today .md { background: var(--lavanda); color: #4b4470; box-shadow: var(--shadow-soft); }
+.map-dow.today.sel .md { background: var(--lavanda); color: #4b4470; border-color: #fff; }
+
+/* Bloques puntuales (con fecha concreta) marcados con un puntito */
+.map-block.pinned { box-shadow: inset 0 0 0 2px rgba(255,255,255,0.55), var(--shadow-soft); }
+.map-block.pinned::after {
+  content: ""; position: absolute; right: 3px; top: 3px;
+  width: 5px; height: 5px; border-radius: 50%; background: rgba(0,0,0,0.28);
+}
 
 .hint { font-size: 12px; color: var(--ink-faint); margin: 14px 2px 4px; text-align: center; }

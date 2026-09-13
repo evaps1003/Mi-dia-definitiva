@@ -8,7 +8,7 @@
   var A = Org.add = {};
 
   // ── Estado de formulario ─────────────────────────────────────
-  var mBlock = { id: null, color: "#D9CDEF", days: [], weekly: true, showAsAviso: false };
+  var mBlock = { id: null, color: "#D9CDEF", days: [], weekly: true, showAsAviso: false, date: "" };
   var mHabit = { id: null, color: "#D9CDEF", emoji: "\uE006" };
   var mTask  = { id: null, color: "#FBDCC6", days: [], weekly: false };
   var mEvent = { id: null, color: "#D7E7F2" };
@@ -24,6 +24,8 @@
       b = S.state.blocks.filter(function (x) { return x.id === mBlock.id; })[0];
     }
     mBlock.days = b ? (U.blockWeekdays(b)).slice() : (opts.weekday !== undefined ? [opts.weekday] : []);
+    mBlock.date = b ? (b.date || "") : (opts.date || "");
+    if (mBlock.date && !mBlock.days.length) mBlock.days = [U.weekdayOf(mBlock.date)];
     mBlock.weekly = b ? !!b.weekly : true;
     var start = b ? U.fmtMin(b.startMin) : "09:00";
     var end = b ? U.fmtMin(b.endMin) : "10:00";
@@ -32,6 +34,7 @@
 
     document.getElementById("blockModalTitle").textContent = mBlock.id ? "Editar bloque" : "A\u00f1adir bloque";
     document.getElementById("block-title").value = b ? b.title : "";
+    document.getElementById("block-date").value = mBlock.date;
     U.renderDayPills(document.getElementById("block-day-pills"), mBlock.days, function (days) { mBlock.days = days; });
     document.getElementById("block-start").value = start;
     document.getElementById("block-end").value = end;
@@ -50,7 +53,9 @@
     if (!title) return U.toast("Escribe un t\u00edtulo");
     if (!mBlock.days.length) return U.toast("Selecciona al menos un d\u00eda");
     if (endMin <= startMin) return U.toast("El fin debe ser tras el inicio");
-    var data = { title: title, weekdays: mBlock.days.slice(), startMin: startMin, endMin: endMin, color: mBlock.color, weekly: mBlock.weekly ? 1 : 0, showAsAviso: document.getElementById("block-aviso").checked ? 1 : 0 };
+    var dateVal = document.getElementById("block-date").value || "";
+    if (dateVal && !mBlock.days.length) mBlock.days = [U.weekdayOf(dateVal)];
+    var data = { title: title, weekdays: mBlock.days.slice(), startMin: startMin, endMin: endMin, color: mBlock.color, weekly: mBlock.weekly ? 1 : 0, showAsAviso: document.getElementById("block-aviso").checked ? 1 : 0, date: dateVal || null };
     var p = mBlock.id ? repo.blocks.update(mBlock.id, data) : repo.blocks.add(data);
     p.then(function () {
       U.closeModal("modal-block");

@@ -63,10 +63,15 @@
     },
 
     // ── Selectores ─────────────────────────────────────────────
+    // Bloques que aplican a una fecha iso:
+    // * con `date` (bloque puntual): solo ese día exacto
+    // * sin `date` (plantilla semanal): los días de la semana que coincidan
     blocksFor: function (iso) {
       var w = U.weekdayOf(iso);
-      return S.state.blocks.filter(function (b) { return U.blockWeekdays(b).indexOf(w) >= 0; })
-        .sort(function (a, b) { return a.startMin - b.startMin; });
+      return S.state.blocks.filter(function (b) {
+        if (b.date) return b.date === iso;
+        return U.blockWeekdays(b).indexOf(w) >= 0;
+      }).sort(function (a, b) { return a.startMin - b.startMin; });
     },
 
     // Fecha concreta (ISO) del día de la semana `w` dentro de la semana

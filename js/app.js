@@ -76,9 +76,13 @@
         break;
 
       case "map-day":
-        S.state.semanaWday = +el.dataset.w;
+        S.state.selectedISO = el.dataset.iso || iso;
         S.state.semanaMode = "day";
         S.notify();
+        break;
+
+      case "add-block-iso":
+        Org.add.openBlockModal({ date: el.dataset.iso });
         break;
 
       case "add-block-wday":
@@ -92,6 +96,7 @@
       case "pick-day": controls.setDay(el.dataset.iso); break;
       case "week-prev": controls.shiftWeek(-1); break;
       case "week-next": controls.shiftWeek(1); break;
+      case "go-today": controls.goToday(); break;
 
       case "edit-block":
         Org.add.openBlockModal({ blockId: id });
