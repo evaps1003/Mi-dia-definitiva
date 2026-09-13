@@ -13,7 +13,12 @@
     { id: "celeste",   name: "Celeste",   hex: "#CFF0F0" }
   ];
 
-  Org.EMOJIS = ["\uD83D\uDCA7","\uD83D\uDCD6","\uD83C\uDFC3","\uD83E\uDDD8","\uD83E\uDD57","\uD83D\uDE34",
+  // Emoticonos personalizados (PUA \uE000–\uF8FF):
+  // cada uno debe estar en img/emoji/<CODIGO>.svg (p.ej. E001.svg = icono-diente)
+  Org.CUSTOM_EMOJIS = ["\uE001"];
+
+  Org.EMOJIS = Org.CUSTOM_EMOJIS.concat([
+    "\uD83D\uDCA7","\uD83D\uDCD6","\uD83C\uDFC3","\uD83E\uDDD8","\uD83E\uDD57","\uD83D\uDE34",
     "\u270D\uFE0F","\uD83C\uDFB8","\uD83C\uDFCB","\uD83D\uDEB6","\uD83C\uDFA8","\uD83D\uDDE3\uFE0F",
     "\u2615","\uD83C\uDF19","\uD83D\uDC8A","\uD83D\uDEBF","\uD83E\uDDF9","\uD83D\uDE4F",
     "\uD83C\uDFAF","\uD83E\uDDE0","\uD83D\uDC36","\uD83C\uDF31","\uD83E\uDDB7","\uD83D\uDC5F",
@@ -23,7 +28,7 @@
     "\u2728","\u2B50","\uD83C\uDF3C","\uD83C\uDF37","\uD83D\uDC96","\uD83E\uDD0D","\u2601",
     "\uD83E\uDEB7","\uD83E\uDEA5","\uD83D\uDED2","\uD83E\uDE9B","\uD83D\uDCBB","\uD83D\uDCDE",
     "\uD83E\uDEE7","\uD83D\uDE80","\u2708\uFE0F",
-    "\uD83D\uDE0A"];
+    "\uD83D\uDE0A"]);
 
   // Indexadas por Date.getDay(): 0 = Domingo … 6 = Sábado
   Org.WEEK_SHORT = ["Dom", "Lun", "Mar", "Mi\u00e9", "Jue", "Vie", "S\u00e1b"];

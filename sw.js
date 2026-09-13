@@ -1,4 +1,4 @@
-var CACHE = "midia-v23";
+var CACHE = "midia-v24";
 var ARCHIVOS = [
   "./",
   "./index.html",
@@ -18,6 +18,7 @@ var ARCHIVOS = [
   "./icons/icon-sun-192.png",
   "./icons/icon-sun-512.png",
   "./icons/icon-sun-maskable-512.png",
+  "./img/emoji/E001.svg",
   "./icons/apple-touch-icon.png",
   "./icons/logo.svg",
   "./icons/hoy.svg",
