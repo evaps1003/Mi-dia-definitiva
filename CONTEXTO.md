@@ -4,7 +4,7 @@ Organizador personal 100% offline en GitHub Pages:
 **https://evaps1003.github.io/Mi-dia-definitiva/**
 
 - Repo: `github.com/evaps1003/Mi-dia-definitiva` (rama `master`)
-- PWA con Service Worker (`sw.js`, versión actual `midia-v27`)
+- PWA con Service Worker (`sw.js`, versión actual `midia-v28`)
 - Persistencia: IndexedDB (`midia-offline`) con tiendas `blocks`, `habits`, `habit_log`, `tasks`, `task_log`, `events`, `meta`
 - Código en `js/`: `const`, `db`, `ui`, `repo`, `clock`, `store`, `add`, `app` y vistas en `js/views/` (`hoy`, `semana`, `calendario`)
 
@@ -68,6 +68,11 @@ Organizador personal 100% offline en GitHub Pages:
 - Badge del día actual en las píldoras: número dentro de un círculo lavanda (`css/styles.css`).
 - Asignación contextual confirmada: tocar un día de una semana futura abre ese día y el modal de bloque/tarea lleva la fecha exacta `YYYY-MM-DD`.
 - SW v26→v27.
+
+## Sesión: botón «Esta semana» solo en la semana actual
+
+- En la vista Semana, el botón **Esta semana** ahora solo aparece cuando la semana visible corresponde a la de hoy (días consecutivos de navegación incluidos). Al deslizar a otra semana (futura o pasada), el botón desaparece (`js/views/semana.js` `navbarHTML`).
+- SW v27→v28.
 
 ## Recordatorio de despliegue
 

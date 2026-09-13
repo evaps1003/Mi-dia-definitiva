@@ -1,4 +1,4 @@
-var CACHE = "midia-v27";
+var CACHE = "midia-v28";
 var ARCHIVOS = [
   "./",
   "./index.html",

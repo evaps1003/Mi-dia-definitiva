@@ -31,10 +31,12 @@
       var iso = S.state.selectedISO || U.hoyISO();
       var days = U.weekDaysOfISO(iso);
       var range = U.fmtRangeISO(days[0], days[6]);
+      var today = U.hoyISO();
+      var inThisWeek = U.mondayOfISO(iso) === U.mondayOfISO(today);
+      var nowBtn = inThisWeek ? '<button class="week-now" type="button" data-action="go-today">Esta semana</button>' : "";
       return '<div class="week-navbar">' +
         '<button class="week-nav" type="button" data-action="week-prev" aria-label="Semana anterior">&lt;</button>' +
-        '<div class="week-range"><span class="week-range-main">Semana <strong>' + U.esc(range) + "</strong></span>" +
-        '<button class="week-now" type="button" data-action="go-today">Esta semana</button></div>' +
+        '<div class="week-range"><span class="week-range-main">Semana <strong>' + U.esc(range) + "</strong></span>" + nowBtn + "</div>" +
         '<button class="week-nav" type="button" data-action="week-next" aria-label="Semana siguiente">&gt;</button></div>';
     },
 
