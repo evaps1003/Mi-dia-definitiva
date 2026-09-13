@@ -52,6 +52,13 @@
     var nav = e.target.closest(".nav-item");
     if (nav) { U.showView(nav.dataset.view); return; }
 
+    // Toca el título/logo (arriba a la izquierda): vuelve a Hoy y al día actual
+    if (e.target.closest(".topbar")) {
+      U.showView("hoy");
+      controls.goToday();
+      return;
+    }
+
     var el = e.target.closest("[data-action]");
     if (!el) return;
     var a = el.dataset.action;
