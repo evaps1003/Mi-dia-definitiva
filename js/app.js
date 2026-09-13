@@ -61,7 +61,9 @@
     switch (a) {
       case "add-habit-sec": Org.add.openHabitModal({}); break;
       case "add-task-sec": Org.add.openTaskModal({ iso: iso }); break;
-      case "add-event-cal": Org.add.openEventModal({ iso: el.dataset.iso }); break;
+      case "cal-add-event": Org.add.openEventModal({ iso: el.dataset.iso }); break;
+      case "cal-add-task": Org.add.openTaskModal({ iso: el.dataset.iso }); break;
+      case "cal-add-block": Org.add.openBlockModal({ weekday: U.weekdayOf(el.dataset.iso) }); break;
 
       case "set-wday":
         S.state.semanaWday = +el.dataset.w;
@@ -119,7 +121,7 @@
         break;
 
       case "buzon-done":
-        controls.toggleTask(id, true).then(function () { Org.add.renderBuzon(); });
+        controls.toggleTask(id, null, true).then(function () { Org.add.renderBuzon(); });
         break;
 
       case "buzon-del":
@@ -145,7 +147,7 @@
   document.addEventListener("change", function (e) {
     var t = e.target;
     if (t.dataset.action === "task-toggle") {
-      controls.toggleTask(+t.dataset.id, t.checked);
+      controls.toggleTask(+t.dataset.id, t.dataset.iso || null, t.checked);
     } else if (t.dataset.action === "habit-toggle") {
       controls.toggleHabit(+t.dataset.id, t.dataset.iso, t.checked);
     } else if (t.dataset.action === "buzon-date") {

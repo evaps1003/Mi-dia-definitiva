@@ -28,13 +28,14 @@
         : U.emptyHTML("Crea h\u00e1bitos diarios para darle ritmo a tu d\u00eda.");
 
       var taskList = tasks.length ?
-        tasks.map(function (t) { return U.taskCardHTML(t); }).join("")
+        tasks.map(function (t) { return U.taskCardHTML(t, iso); }).join("")
         : U.emptyHTML("No hay tareas asignadas a este d\u00eda.");
 
-      var avisos = events.length ?
-        '<div class="events-strip">' + events.map(U.eventPillHTML).join("") + "</div>" : "";
-
       var blocks = S.blocksFor(iso);
+      var avisoBlocks = blocks.filter(function (b) { return b.showAsAviso; });
+      var avisos = (events.length || avisoBlocks.length) ?
+        '<div class="events-strip">' + events.map(U.eventPillHTML).join("") +
+        avisoBlocks.map(U.bloquePillHTML).join("") + "</div>" : "";
       var blockTitle = iso === today ? "Horario de hoy" : "Horario de " + Org.WEEK_NAMES[U.weekdayOf(iso)];
       var blockList = blocks.length ?
         '<div class="timeline">' + blocks.map(U.bloqueCardHTML).join("") + "</div>" :

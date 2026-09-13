@@ -16,11 +16,12 @@
       return repo.meta.get(KEY).then(function (last) {
         var today = U.hoyISO();
         if (last === today) return Promise.resolve(false);
-        return repo.migrateOverdue(today)
+        return repo.taskLog.seedLegacy()
+          .then(function () { return repo.migrateOverdue(today); })
           .then(function (n) {
-            // Limpia historial de hábitos antiguo (> 120 días)
+            // Limpia historial viejo (> 120 días) de hábitos y tareas
             var limit = U.addDaysISO(today, -120);
-            return repo.habitLog.pruneBefore(limit);
+            return repo.habitLog.pruneBefore(limit).then(function () { return repo.taskLog.pruneBefore(limit); });
           })
           .then(function () {
             return repo.meta.set(KEY, today);

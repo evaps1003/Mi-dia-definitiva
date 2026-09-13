@@ -45,7 +45,7 @@
       var dayISO = S.weekdayISO(w);
       var tasks = S.tasksFor(dayISO);
       var taskList = tasks.length ?
-        tasks.map(U.taskCardHTML).join("") :
+        tasks.map(function (t) { return U.taskCardHTML(t, dayISO); }).join("") :
         U.emptyHTML("No hay tareas para este d\u00eda.");
 
       return '<div class="week-row"><div class="pill-strip">' + pills + "</div></div>" +

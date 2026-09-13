@@ -402,7 +402,6 @@ body {
 /* ---------- Botones + de sección ---------- */
 .section-title { align-items: center; }
 .section-title .add-mini { margin: 0 6px 0 auto; }
-.cal-day-panel h4 .add-mini { margin: 0 4px 0 auto; }
 .add-mini {
   flex: 0 0 auto; border: none; background: none; box-shadow: none;
   color: #8a74c9; font-size: 24px; font-weight: 500; line-height: 1;
@@ -410,6 +409,17 @@ body {
   transition: opacity .12s, transform .12s;
 }
 .add-mini:active { opacity: .5; transform: scale(0.92); }
+
+/* Selector de tipo [Tarea | Aviso | Bloque] en el día del Calendario */
+.cal-adds { display: flex; gap: 6px; margin-left: auto; flex: 0 0 auto; flex-wrap: wrap; }
+.cal-add {
+  border: none; background: var(--lavanda-soft); color: #6a56a4;
+  font-size: 11px; font-weight: 700; padding: 6px 9px; border-radius: 10px;
+  cursor: pointer; font-family: inherit; white-space: nowrap;
+  transition: background .12s, transform .12s;
+}
+.cal-add:active { background: var(--lavanda); transform: scale(0.94); }
+.b-bell { font-size: 11px; margin-left: 2px; opacity: .85; }
 
 /* ---------- Tarjeta inteligente del cronograma ---------- */
 .smart-card {

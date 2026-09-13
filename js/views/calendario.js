@@ -59,10 +59,13 @@
         if (iso === S.state.calSel) cls += " selected";
 
         var evs = S.eventsFor(iso);
+        var pending = S.pendingFor(iso);
+        var avisoBlocks = S.blocksFor(iso).filter(function (b) { return b.showAsAviso; });
         var dots = [];
-        evs.slice(0, 2).forEach(function (e) { dots.push({ c: e.color || "#9d86cf" }); });
-        S.pendingFor(iso).slice(0, Math.max(0, 3 - dots.length)).forEach(function (t) { dots.push({ c: t.color || "#9d86cf" }); });
-        var extra = S.pendingFor(iso).length + evs.length - 3;
+        evs.forEach(function (e, i) { if (i < 2) dots.push({ c: e.color || "#9d86cf" }); });
+        pending.forEach(function (t) { if (dots.length < 3) dots.push({ c: t.color || "#9d86cf" }); });
+        avisoBlocks.forEach(function (b, i) { if (dots.length < 3) dots.push({ c: b.color || "#9d86cf" }); });
+        var extra = evs.length + pending.length + avisoBlocks.length - 3;
         var dotsHTML = dots.map(function (d) {
           return '<span class="dot" style="background:' + U.esc(d.c) + '"></span>';
         }).join("");
@@ -75,10 +78,12 @@
       var selIso = S.state.calSel || today;
       var selEvs = S.eventsFor(selIso);
       var selTasks = S.tasksFor(selIso);
-      var dayEventList = selEvs.length ?
-        '<div class="events-strip">' + selEvs.map(U.eventPillHTML).join("") + "</div>" : "";
+      var avisoSel = S.blocksFor(selIso).filter(function (b) { return b.showAsAviso; });
+      var dayEventList = (selEvs.length || avisoSel.length) ?
+        '<div class="events-strip">' + selEvs.map(U.eventPillHTML).join("") +
+        avisoSel.map(U.bloquePillHTML).join("") + "</div>" : "";
       var dayTaskList = selTasks.length ?
-        selTasks.map(function (t) { return U.taskCardHTML(t); }).join("")
+        selTasks.map(function (t) { return U.taskCardHTML(t, selIso); }).join("")
         : U.emptyHTML("Sin tareas para este d\u00eda.");
 
       root.innerHTML =
@@ -90,7 +95,12 @@
 
         '<div class="cal-day-panel">' +
         '<h4>' + U.esc(U.fullDayISO(selIso)) +
-        '<button class="add-mini" type="button" data-action="add-event-cal" data-iso="' + selIso + '">+</button></h4>' +
+        '<span class="cal-adds">' +
+        '<button type="button" class="cal-add" data-action="cal-add-task" data-iso="' + selIso + '">\u2713 Tarea</button>' +
+        '<button type="button" class="cal-add" data-action="cal-add-event" data-iso="' + selIso + '">\uD83D\uDD14 Aviso</button>' +
+        '<button type="button" class="cal-add" data-action="cal-add-block" data-iso="' + selIso + '">\u25A6 Bloque</button>' +
+        '</span>' +
+        "</h4>" +
         dayEventList +
         dayTaskList +
         "</div>";

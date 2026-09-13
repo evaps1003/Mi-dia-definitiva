@@ -160,15 +160,17 @@
 
   function bloqueCardHTML(block) {
     var t1 = fmtMin(block.startMin), t2 = fmtMin(block.endMin);
+    var aviso = block.showAsAviso ? '<span class="b-bell" title="También como aviso">\uD83D\uDD14</span>' : "";
     return '<div class="bloque" data-action="edit-block" data-id="' + block.id + '" style="--dot:' + esc(block.color) + '">' +
-      '<div class="b-time">' + t1 + " \u2013 " + t2 + "</div>" +
+      '<div class="b-time">' + t1 + " \u2013 " + t2 + aviso + "</div>" +
       '<div class="b-title" style="background:' + esc(block.color) + '">' + esc(block.title) + "</div></div>";
   }
 
-  function taskCardHTML(task) {
-    var isDone = !!task.completed;
+  function taskCardHTML(task, iso) {
+    var S = Org.store;
+    var isDone = iso ? !!S.taskDone(task.id, iso) : !!task.completed;
     var cardCls = isDone ? " done" : "";
-    var chk = checkHTML(isDone, ' data-action="task-toggle" data-id="' + task.id + '"');
+    var chk = checkHTML(isDone, ' data-action="task-toggle" data-id="' + task.id + '"' + (iso ? ' data-iso="' + iso + '"' : ""));
     var colorBg = task.color || "#D9CDEF";
     var dueLabel = task.dueDate ? task.dueDate.slice(8) + "/" + task.dueDate.slice(5, 7) : "Buz\u00f3n";
     var rep = task.weekly ? '<span class="task-chip rep">Semanal</span>' : "";

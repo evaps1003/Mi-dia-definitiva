@@ -12,6 +12,7 @@
       tasks: [],
       events: [],
       log: {},          // "habitId|YYYY-MM-DD" -> 1/0
+      taskLog: {},      // "taskId|YYYY-MM-DD" -> 1/0
       selectedISO: null,
       semanaWday: null, // 0..6 (getDay)
       semanaMode: "day", // "day" | "map"
@@ -32,9 +33,10 @@
         repo.habits.all(),
         repo.tasks.all(),
         repo.events.all(),
-        repo.habitLog.all()
+        repo.habitLog.all(),
+        repo.taskLog.all()
       ]).then(function (rs) {
-        var blocks = rs[0], habits = rs[1], tasks = rs[2], events = rs[3], logRows = rs[4];
+        var blocks = rs[0], habits = rs[1], tasks = rs[2], events = rs[3], logRows = rs[4], taskLogRows = rs[5];
         S.state.blocks = blocks || [];
         S.state.habits = (habits || []).sort(function (a, b) { return (a.sortPos || 0) - (b.sortPos || 0); });
         S.state.tasks = tasks || [];
@@ -42,6 +44,9 @@
         var map = {};
         (logRows || []).forEach(function (r) { map[r.habitId + "|" + r.date] = r.completed; });
         S.state.log = map;
+        var tmap = {};
+        (taskLogRows || []).forEach(function (r) { tmap[r.taskId + "|" + r.date] = r.completed; });
+        S.state.taskLog = tmap;
         if (!S.state.selectedISO) S.state.selectedISO = U.hoyISO();
         if (S.state.semanaWday === null) S.state.semanaWday = new Date().getDay();
         if (!S.state.cal) {
@@ -94,20 +99,23 @@
       return S.state.tasks.filter(function (t) {
         if (t.dueDate === iso) return true;
         return !!t.weekly && t.dueDate && iso >= t.dueDate && U.weekdayOf(t.dueDate) === w;
-      }).sort(function (a, b) { return (a.completed ? 1 : 0) - (b.completed ? 1 : 0); });
+      }).sort(function (a, b) {
+        return (S.taskDone(a.id, iso) ? 1 : 0) - (S.taskDone(b.id, iso) ? 1 : 0);
+      });
     },
     pendingFor: function (iso) {
       var w = U.weekdayOf(iso);
       return S.state.tasks.filter(function (t) {
-        if (t.dueDate === iso && !t.completed) return true;
-        return !!t.weekly && t.dueDate && iso >= t.dueDate && U.weekdayOf(t.dueDate) === w && !t.completed;
+        if (t.dueDate === iso) return !S.taskDone(t.id, iso);
+        return !!t.weekly && t.dueDate && iso >= t.dueDate && U.weekdayOf(t.dueDate) === w && !S.taskDone(t.id, iso);
       });
     },
     pendingBuzon: function () {
       return S.state.tasks.filter(function (t) { return !t.dueDate && !t.completed; });
     },
     buzonCount: function () { return S.pendingBuzon().length; },
-    habitDone: function (habitId, iso) { return !!S.state.log[habitId + "|" + iso]; }
+    habitDone: function (habitId, iso) { return !!S.state.log[habitId + "|" + iso]; },
+    taskDone: function (taskId, iso) { return !!S.state.taskLog[taskId + "|" + iso]; }
   };
 
   // ── Acciones (capa de interacción) ───────────────────────────
@@ -120,14 +128,18 @@
     },
     goToday: function () { S.setDay(U.hoyISO()); },
 
-    toggleTask: function (id, val) {
+    // Tachar una tarea:
+    // * con `iso` -> registro por fecha en task_log (independiente por día)
+    // * sin `iso` (Buzón, sin fecha) -> booleano global completed
+    toggleTask: function (id, iso, val) {
+      if (iso) return repo.taskLog.upsert(id, iso, val).then(function () { return S.refresh(); });
       return repo.tasks.update(id, { completed: val ? 1 : 0 }).then(function () { return S.refresh(); });
     },
     editTask: function (id, title, dueDate, completed, color) {
       return repo.tasks.update(id, { title: title, dueDate: dueDate || null, color: color }).then(function () { return S.refresh(); });
     },
     deleteTask: function (id) {
-      return repo.tasks.remove(id).then(function () { return S.refresh(); });
+      return repo.taskLog.removeForTask(id).then(function () { return repo.tasks.remove(id); }).then(function () { return S.refresh(); });
     },
     deleteEvent: function (id) {
       return repo.events.remove(id).then(function () { return S.refresh(); });

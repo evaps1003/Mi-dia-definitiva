@@ -81,6 +81,47 @@
       remove: function (id) { return db.del("tasks", id); }
     },
 
+    // Registro de completados de tareas por fecha (taskId + "|" + date).
+    // Permite tachar una tarea recurrente solo para un día concreto.
+    taskLog: {
+      all: function () { return db.getAll("task_log"); },
+      upsert: function (taskId, date, completed) {
+        return db.getAll("task_log").then(function (rows) {
+          var existing = rows.filter(function (r) { return r.taskId === taskId && r.date === date; })[0];
+          if (existing) {
+            existing.completed = completed ? 1 : 0;
+            return db.put("task_log", existing);
+          }
+          return db.put("task_log", { taskId: taskId, date: date, completed: completed ? 1 : 0 });
+        });
+      },
+      removeForTask: function (taskId) {
+        return db.getAll("task_log").then(function (rows) {
+          var ids = rows.filter(function (r) { return r.taskId === taskId; }).map(function (r) { return r.id; });
+          return Promise.all(ids.map(function (id) { return db.del("task_log", id); }));
+        });
+      },
+      pruneBefore: function (iso) {
+        return db.getAll("task_log").then(function (rows) {
+          var olds = rows.filter(function (r) { return r.date < iso; });
+          return Promise.all(olds.map(function (r) { return db.del("task_log", r.id); }));
+        });
+      },
+      // Migración 1 vez: tareas antiguas con completed=1 y fecha pasan a su log por fecha
+      seedLegacy: function () {
+        return Promise.all([db.getAll("tasks"), db.getAll("task_log")]).then(function (rs) {
+          var tasks = rs[0], rows = rs[1] || [];
+          var seen = {};
+          rows.forEach(function (r) { seen[r.taskId + "|" + r.date] = 1; });
+          var toSeed = tasks.filter(function (t) { return !!t.completed && !!t.dueDate && !seen[t.id + "|" + t.dueDate]; });
+          if (!toSeed.length) return;
+          return db.addAll("task_log", toSeed.map(function (t) {
+            return { taskId: t.id, date: t.dueDate, completed: 1 };
+          }));
+        });
+      }
+    },
+
     events: {
       all: function () { return db.getAll("events"); },
       add: function (data) { return db.put("events", data); },
@@ -98,10 +139,16 @@
   // ── Buzón: migración automática ──────────────────────────────
   // Todas las tareas incompletas (no recurrentes) con dueDate
   // anterior a `todayISO` pierden su fecha y pasan a pendientes sin fecha.
+  // "Incompleta" = sin registro de hecha en su fecha concreta (task_log)
+  // ni el booleano antiguo completed.
   R.migrateOverdue = function (todayISO) {
-    return db.getAll("tasks").then(function (tasks) {
+    return Promise.all([db.getAll("tasks"), db.getAll("task_log")]).then(function (rs) {
+      var tasks = rs[0], logRows = rs[1] || [];
+      var logMap = {};
+      logRows.forEach(function (r) { logMap[r.taskId + "|" + r.date] = r.completed; });
       var targets = tasks.filter(function (t) {
-        return !t.completed && !t.weekly && t.dueDate && t.dueDate < todayISO;
+        if (t.weekly || !t.dueDate || t.dueDate >= todayISO) return false;
+        return !(t.completed || logMap[t.id + "|" + t.dueDate]);
       });
       if (!targets.length) return 0;
       return db.addAll("tasks", targets.map(function (t) {
