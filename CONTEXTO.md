@@ -4,7 +4,7 @@ Organizador personal 100% offline en GitHub Pages:
 **https://evaps1003.github.io/Mi-dia-definitiva/**
 
 - Repo: `github.com/evaps1003/Mi-dia-definitiva` (rama `master`)
-- PWA con Service Worker (`sw.js`, versión actual `midia-v28`)
+- PWA con Service Worker (`sw.js`, versión actual `midia-v30`)
 - Persistencia: IndexedDB (`midia-offline`) con tiendas `blocks`, `habits`, `habit_log`, `tasks`, `task_log`, `events`, `meta`
 - Código en `js/`: `const`, `db`, `ui`, `repo`, `clock`, `store`, `add`, `app` y vistas en `js/views/` (`hoy`, `semana`, `calendario`)
 
@@ -73,6 +73,12 @@ Organizador personal 100% offline en GitHub Pages:
 
 - En la vista Semana, el botón **Esta semana** ahora solo aparece cuando la semana visible corresponde a la de hoy (días consecutivos de navegación incluidos). Al deslizar a otra semana (futura o pasada), el botón desaparece (`js/views/semana.js` `navbarHTML`).
 - SW v27→v28.
+
+## Sesión: iconos con nombre propio añadidos a la paleta
+
+- 10 SVGs nuevos en `img/emoji/` **sin renombrar**: `icono-bombilla`, `icono-carta`, `icono-cerdo`, `icono-coche`, `icono-cuaderno`, `icono-cuadernolapiz`, `icono-helado`, `icono-lapiz`, `icono-pan`, `icono-pesa`.
+- Mapeo PUA → archivo en `Org.EMOJI_FILES` (const.js): `\uE00C`..`\uE015` → esos nombres. `emojiHTML` (ui.js) usa `Org.EMOJI_FILES[c]` si existe; si no, el `<codepunto>.svg` habitual.
+- `Org.CUSTOM_EMOJIS` = 21 iconos. Precache en sw.js con los 10 ficheros; SW v29→v30.
 
 ## Recordatorio de despliegue
 

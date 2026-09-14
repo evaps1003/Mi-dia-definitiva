@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <path d="M25 75 Q20 75 18 70 Q15 65 18 60 Q20 55 25 55 L30 55 Q35 55 38 50 Q40 45 40 40 Q40 35 35 30 Q30 25 30 20 Q30 15 35 15 Q40 15 42 20 Q45 15 48 15 Q52 15 52 20 Q55 15 58 15 Q62 15 62 20 Q65 15 68 15 Q72 15 72 20 Q75 15 78 15 Q82 15 82 20 Q82 25 78 30 Q75 35 75 40 Q75 45 70 50 Q65 55 60 55 L65 55 Q70 55 72 60 Q75 65 72 70 Q70 75 65 75 Z" fill="#FFD4B8" stroke="#6B4F4F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="40" cy="65" r="3" fill="#4A3728" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="55" cy="65" r="3" fill="#4A3728" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M43 72 Q48 76 53 72" fill="none" stroke="#4A3728" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>

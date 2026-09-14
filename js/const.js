@@ -17,10 +17,27 @@
   // cada uno debe estar en img/emoji/<CODIGO>.svg
   // E001 diente · E002 cerdo · E003 cubiertos · E004 flor rosa · E005 fresa
   // E006 gota de agua · E007 libro · E008 pata blanca · E009 sobre · E00A sol · E00B tulipán
+  // E00C..E015 tienen su propio <archivo>.svg sin renombrar (ver Org.EMOJI_FILES)
   Org.CUSTOM_EMOJIS = [
     "\uE001", "\uE002", "\uE003", "\uE004", "\uE005",
-    "\uE006", "\uE007", "\uE008", "\uE009", "\uE00A", "\uE00B"
+    "\uE006", "\uE007", "\uE008", "\uE009", "\uE00A", "\uE00B",
+    "\uE00C", "\uE00D", "\uE00E", "\uE00F", "\uE010",
+    "\uE011", "\uE012", "\uE013", "\uE014", "\uE015"
   ];
+
+  // Iconos cuyos SVGs conservan su nombre original (sin extensión), en lugar de <codepunto>.svg
+  Org.EMOJI_FILES = {
+    "\uE00C": "icono-bombilla",
+    "\uE00D": "icono-carta",
+    "\uE00E": "icono-cerdo",
+    "\uE00F": "icono-coche",
+    "\uE010": "icono-cuaderno",
+    "\uE011": "icono-cuadernolapiz",
+    "\uE012": "icono-helado",
+    "\uE013": "icono-lapiz",
+    "\uE014": "icono-pan",
+    "\uE015": "icono-pesa"
+  };
 
   // La paleta de emoticonos usa solo los personalizados (sin los de OpenMoji)
   Org.EMOJIS = Org.CUSTOM_EMOJIS;

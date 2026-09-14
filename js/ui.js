@@ -49,7 +49,8 @@
   }
   function emojiHTML(e, cls) {
     var c = e || "";
-    return '<img class="emoji' + (cls ? " " + cls : "") + '" src="img/emoji/' + emojiFile(c) + '.svg" alt="" data-char="' + esc(c) + '">';
+    var file = (Org.EMOJI_FILES && Org.EMOJI_FILES[c]) ? Org.EMOJI_FILES[c] : emojiFile(c);
+    return '<img class="emoji' + (cls ? " " + cls : "") + '" src="img/emoji/' + file + '.svg" alt="" data-char="' + esc(c) + '">';
   }
 
   U.pad = pad;

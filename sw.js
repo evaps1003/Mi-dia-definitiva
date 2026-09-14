@@ -1,4 +1,4 @@
-var CACHE = "midia-v28";
+var CACHE = "midia-v30";
 var ARCHIVOS = [
   "./",
   "./index.html",
@@ -29,6 +29,16 @@ var ARCHIVOS = [
   "./img/emoji/E009.svg",
   "./img/emoji/E00A.svg",
   "./img/emoji/E00B.svg",
+  "./img/emoji/icono-bombilla.svg",
+  "./img/emoji/icono-carta.svg",
+  "./img/emoji/icono-cerdo.svg",
+  "./img/emoji/icono-coche.svg",
+  "./img/emoji/icono-cuaderno.svg",
+  "./img/emoji/icono-cuadernolapiz.svg",
+  "./img/emoji/icono-helado.svg",
+  "./img/emoji/icono-lapiz.svg",
+  "./img/emoji/icono-pan.svg",
+  "./img/emoji/icono-pesa.svg",
   "./icons/apple-touch-icon.png",
   "./icons/logo.svg",
   "./icons/hoy.svg",
